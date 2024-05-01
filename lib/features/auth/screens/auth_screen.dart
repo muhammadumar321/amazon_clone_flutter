@@ -1,5 +1,6 @@
 import 'package:amazon_clone/common/widgets/custom_textfield.dart';
 import 'package:amazon_clone/constant/gloable_variables.dart';
+import 'package:amazon_clone/features/auth/services/auth_service.dart';
 import 'package:flutter/material.dart';
 
 import '../../../common/widgets/custom_button.dart';
@@ -20,9 +21,19 @@ class _AuthScreenState extends State<AuthScreen> {
   final _signUpFormKey = GlobalKey<FormState>();
   final _signInFormKey = GlobalKey<FormState>();
 
+  final AuthService authService = AuthService();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _pwdController = TextEditingController();
   final TextEditingController _namController = TextEditingController();
+
+  void signUpUser() {
+    authService.signUpUser(
+      context: context,
+      email: _emailController.text,
+      password: _pwdController.text,
+      name: _namController.text,
+    );
+  }
 
   @override
   void dispose() {
@@ -100,7 +111,11 @@ class _AuthScreenState extends State<AuthScreen> {
                         ),
                         CustomButton(
                           title: 'SignUp',
-                          onTap: () {},
+                          onTap: () {
+                            if (_signUpFormKey.currentState!.validate()) {
+                              signUpUser();
+                            }
+                          },
                         )
                       ],
                     ),
